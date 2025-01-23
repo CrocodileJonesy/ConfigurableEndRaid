@@ -110,6 +110,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)\..\..\BepInEx\plugins\$(TargetFileName)"</PostBuildEvent>
+    <PostBuildEvent>if "$(ConfigurationName)" == "Debug" (
+copy "$(TargetPath)" "$(ProjectDir)\..\..\BepInEx\plugins\$(TargetFileName)"
+) else (
+mkdir $(TargetDir)BepInEx\plugins\
+copy /Y "$(TargetDir)$(TargetFileName)" "$(TargetDir)BepInEx\plugins\$(TargetFileName)"
+powershell.exe -command Compress-Archive -Force -Path $(TargetDir)BepInEx $(TargetDir)$(TargetName).zip)</PostBuildEvent>
   </PropertyGroup>
 </Project>
